@@ -9,5 +9,5 @@ Counting and simulate randomness in pure CSS
 [Kacper Kula - Randomness in CSS with trigonometry functions](https://medium.com/hypersphere-codes/randomness-in-css-with-trigonometry-functions-fac71c89cd23)
 
 * _Update knowledge on recent CSS features_
- * [Kevin Powell - is() / has() / where() pseudo-classes](https://www.youtube.com/watch?v=3ncFpP8GP4g)
- * [Kevin Powell - Trigonometry](https://www.youtube.com/watch?v=eO33Rh3GFGk)
+   * [Kevin Powell - is() / has() / where() pseudo-classes](https://www.youtube.com/watch?v=3ncFpP8GP4g)
+   * [Kevin Powell - Trigonometry](https://www.youtube.com/watch?v=eO33Rh3GFGk)
