@@ -39,7 +39,7 @@
     }
 }
 
-/* BITS VARIABLE --------------------------- */
+/* BITS VARIABLES --------------------------- */
 
 :root {
     
@@ -65,9 +65,10 @@ body {
 
 /* 
 Les conteneurs qui contiendront les étoiles. 
-Ronds pour délimiter le positionnement des étoiles à l'intérieur sur des radius,
-afin d'appliquer deux rotations désynchronisées,
-et par souci de performance, 
+Ronds pour délimiter le positionnement des étoiles 
+à l'intérieur sur des rayons aléatoires.
+Ça me permet d'appliquer des rotations désynchronisées,
+et de contrôler les performances, 
 pour ne pas que trop d'étoiles animées ne soient pas visible dans le viewport. */
 
 section:first-child {
@@ -85,22 +86,25 @@ section:nth-child(2) {
     border-radius: 50%;
     animation: earthRotation 70s linear infinite;
 }
-
-
+section:nth-child(3) {
+    position: absolute;
+    width: 130vmin;
+    height: 130vmin;
+    border-radius: 50%;
+    animation: earthRotation 65s linear infinite;
+}
 
 /* Ici, j'ajoute les variables binaires aux sélecteurs 
-pour pouvoir créer notre pseudo-compteur.
+pour pouvoir créer un pseudo-compteur.
 Bien qu'il y ai un nombre conséquent de sélecteurs, 
-cela évite tout de même de devoir appliqer un style 
+cela évite tout de même de devoir appliquer un style 
 aléatoire manuellement pour chaque élément.
  
-Alternativement, j'aurai également pu rajouter un attribut 
-style aux div HTML avec une variable compteur incrémentée.
-
-Mais avec cette technique, je peux cibler beaucoup plus d'élements
+Avec avec cette technique, je peux cibler beaucoup plus d'élements
 que le nombre de sélecteurs. En revanche, lorsque plus. étoiles 
 sont rangées sous le même sélecteur, (nous avons dépassé les limites du dernier bit),
-leur style ne pourra pas être différencié. */
+leur prop. de style ne peuvent pas être différenciées.
+*/
 
 div:nth-child(2n){
     --b0: 1;
@@ -194,7 +198,7 @@ div {
     --binaryCounter: calc(var(--b0) + 2 * var(--b1) + 4 * var(--b2) + 8 * var(--b3) + 16 * var(--b4) + 32 * var(--b5)); 
 
     
-    /* Je génère un nombre pseudo-aléatoire avec l'aide de sin(), 
+    /* Je génère un nombre pseudo-aléatoire avec l'aide de la fonction de trigo. sin(), 
     qui rend un intervalle [-1, 0], que je normalise à [0, 1] */
                                                                       /* Bruit */
     --randomPositiveNb: calc(0.5 + 0.5 * sin(var(--binaryCounter) * 342.06184 + 23.434));
@@ -202,8 +206,7 @@ div {
     /* Pour me rapprocher de quelque chose de plus aléatoire, 
     je dois rajouter du bruit ici et là avec des valeurs arbitraires */
 
-
-    /* Mon objectif est que les étoiles se positionnent sur un angle et un radius aléatoire, pour chacune.
+    /* Mon objectif est que chaque étoile se positionne sur un angle et un radius aléatoire.
     Cela afin de pouvoir animer une rotation. */
                                                                                 /* Bruit */
     --randomAngle: calc(var(--binaryCounter) * 0.628 + var(--randomPositiveNb) * 0.65656098 * 3.1416);  
