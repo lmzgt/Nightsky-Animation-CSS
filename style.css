@@ -1,0 +1,260 @@
+
+
+/* Pour ce challenge, je me suis aidée de deux articles publiés sur Medium, par Kacper Kula. */
+
+/* 'Counting in CSS' */
+/* https://medium.com/hypersphere-codes/counting-in-css-unlock-magic-of-css-variables-8e610881097a */
+
+
+/* Randomness in CSS using Trigonometry */
+/* https://medium.com/hypersphere-codes/randomness-in-css-with-trigonometry-functions-fac71c89cd23 */
+
+
+
+
+/* RESET RULES ---------------------------*/
+
+/* Box sizing rules */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+/* Remove default margin */
+* {
+    margin: 0;
+  }
+
+/* Remove all animations, transitions and smooth scroll for accessibility requirements */
+@media (prefers-reduced-motion: reduce) {
+  
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
+}
+
+/* BITS VARIABLE --------------------------- */
+
+:root {
+    
+    --b0: 0;
+    --b1: 0;
+    --b2: 0;
+    --b3: 0;
+    --b4: 0;
+    --b5: 0;
+}
+
+/* MAIN STYLE -------------------------------- */
+
+body {
+    min-height: 100vh;
+    position: relative;
+    background: radial-gradient(circle at center, #001c31, #000);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+}
+
+/* 
+Les conteneurs qui contiendront les étoiles. 
+Ronds pour délimiter le positionnement des étoiles à l'intérieur sur des radius,
+afin d'appliquer deux rotations désynchronisées,
+et par souci de performance, 
+pour ne pas que trop d'étoiles animées ne soient pas visible dans le viewport. */
+
+section:first-child {
+    position: absolute;
+    width: 95vmin;
+    height: 95vmin;
+    border-radius: 50%;
+    animation: earthRotation 80s linear infinite;
+}
+
+section:nth-child(2) {
+    position: absolute;
+    width: 170vmin;
+    height: 170vmin;
+    border-radius: 50%;
+    animation: earthRotation 70s linear infinite;
+}
+
+
+
+/* Ici, j'ajoute les variables binaires aux sélecteurs 
+pour pouvoir créer notre pseudo-compteur.
+Bien qu'il y ai un nombre conséquent de sélecteurs, 
+cela évite tout de même de devoir appliqer un style 
+aléatoire manuellement pour chaque élément.
+ 
+Alternativement, j'aurai également pu rajouter un attribut 
+style aux div HTML avec une variable compteur incrémentée.
+
+Mais avec cette technique, je peux cibler beaucoup plus d'élements
+que le nombre de sélecteurs. En revanche, lorsque plus. étoiles 
+sont rangées sous le même sélecteur, (nous avons dépassé les limites du dernier bit),
+leur style ne pourra pas être différencié. */
+
+div:nth-child(2n){
+    --b0: 1;
+}
+
+div:is(
+:nth-child(4n+3),
+:nth-child(4n)) {
+    --b1: 1;
+} 
+
+div:is(
+:nth-child(8n),
+:nth-child(8n-1),
+:nth-child(8n-2),
+:nth-child(8n-3)) {
+    --b2: 1;
+} 
+
+div:is(
+:nth-child(16n),
+:nth-child(16n-1),
+:nth-child(16n-2),
+:nth-child(16n-3),
+:nth-child(16n-4),
+:nth-child(16n-5),
+:nth-child(16n-6),
+:nth-child(16n-7)) {
+    --b3: 1;
+} 
+
+div:is(
+:nth-child(32n),
+:nth-child(32n-1),
+:nth-child(32n-2),
+:nth-child(32n-3),
+:nth-child(32n-4),
+:nth-child(32n-5),
+:nth-child(32n-6),
+:nth-child(32n-7),
+:nth-child(32n-8),
+:nth-child(32n-9),
+:nth-child(32n-10),
+:nth-child(32n-11),
+:nth-child(32n-12),
+:nth-child(32n-13),
+:nth-child(32n-14),
+:nth-child(32n-15)) {
+    --b4: 1;
+}
+
+div:is(
+:nth-child(64n),
+:nth-child(64n-1),
+:nth-child(64n-2),
+:nth-child(64n-3),
+:nth-child(64n-4),
+:nth-child(64n-5),
+:nth-child(64n-6),
+:nth-child(64n-7),
+:nth-child(64n-8),
+:nth-child(64n-9),
+:nth-child(64n-10),
+:nth-child(64n-11),
+:nth-child(64n-12),
+:nth-child(64n-13),
+:nth-child(64n-14),
+:nth-child(64n-15),
+:nth-child(64n-16),
+:nth-child(64n-17),
+:nth-child(64n-18),
+:nth-child(64n-19),
+:nth-child(64n-20),
+:nth-child(64n-21),
+:nth-child(64n-22),
+:nth-child(64n-23),
+:nth-child(64n-24),
+:nth-child(64n-25),
+:nth-child(64n-26),
+:nth-child(64n-27),
+:nth-child(64n-28),
+:nth-child(64n-29),
+:nth-child(64n-30),
+:nth-child(64n-31)) {
+    --b5: 1;
+} 
+
+div {
+
+    /* Je construis mon compteur, donc en base 2, il permet de sélectionner une à une et indépendament toutes les div */
+    --binaryCounter: calc(var(--b0) + 2 * var(--b1) + 4 * var(--b2) + 8 * var(--b3) + 16 * var(--b4) + 32 * var(--b5)); 
+
+    
+    /* Je génère un nombre pseudo-aléatoire avec l'aide de sin(), 
+    qui rend un intervalle [-1, 0], que je normalise à [0, 1] */
+                                                                      /* Bruit */
+    --randomPositiveNb: calc(0.5 + 0.5 * sin(var(--binaryCounter) * 342.06184 + 23.434));
+
+    /* Pour me rapprocher de quelque chose de plus aléatoire, 
+    je dois rajouter du bruit ici et là avec des valeurs arbitraires */
+
+
+    /* Mon objectif est que les étoiles se positionnent sur un angle et un radius aléatoire, pour chacune.
+    Cela afin de pouvoir animer une rotation. */
+                                                                                /* Bruit */
+    --randomAngle: calc(var(--binaryCounter) * 0.628 + var(--randomPositiveNb) * 0.65656098 * 3.1416);  
+    
+    
+    --randomRadius: calc(50% * sqrt(var(--randomPositiveNb) + var(--randomPositiveNb) * 0.2589687));
+
+    position: absolute;
+    width: calc(1px + var(--randomPositiveNb) * 3px);
+    height: calc(1px + var(--randomPositiveNb) * 3px);
+    background-color: white;
+    border-radius: 50%;
+    opacity: calc( 0.4 + var(--randomPositiveNb) * 1);  
+
+    /* Positionnement des étoiles */
+    left: calc(50% + var(--randomRadius) * cos(var(--randomAngle)));
+    top: calc(50% + var(--randomRadius) * sin(var(--randomAngle)));
+
+    animation: twinkle calc(2s + var(--randomPositiveNb) * 3s) ease-in-out infinite alternate;   
+}
+
+/* ANIMATIONS -----------------------------------------*/
+
+@keyframes twinkle {
+    0%, 30%, 60%, 100% {
+      opacity: 1;
+    }
+    5%, 25%, 35%, 45%, 90% {
+      opacity: 0.6;
+    }
+    10%, 80% {
+      opacity: 0.7;
+    }
+    15%, 40%, 70% {
+      opacity: 0.75;
+    }
+    50% {
+      opacity: 0.85;
+    }
+  }
+
+    @keyframes earthRotation { 
+        0% { 
+            transform: rotate(0deg)
+                  
+        } 
+
+        100% { 
+            transform: rotate(360deg)  
+        } 
+    } 
+
+
+
