@@ -39,7 +39,7 @@
     }
 }
 
-/* BITS VARIABLES --------------------------- */
+/* BITS VARIABLE --------------------------- */
 
 :root {
     
@@ -56,7 +56,7 @@
 body {
     min-height: 100vh;
     position: relative;
-    background: radial-gradient(circle at center, #001c31, #000);
+    background: radial-gradient(circle at center,#140729, #0d0116, #000);
     display: flex;
     justify-content: center;
     align-items: center;
@@ -65,10 +65,9 @@ body {
 
 /* 
 Les conteneurs qui contiendront les étoiles. 
-Ronds pour délimiter le positionnement des étoiles 
-à l'intérieur sur des rayons aléatoires.
-Ça me permet d'appliquer des rotations désynchronisées,
-et de contrôler les performances, 
+Ronds pour délimiter le positionnement des étoiles à l'intérieur sur des radius,
+afin d'appliquer des rotations désynchronisées,
+et par souci de performance, 
 pour ne pas que trop d'étoiles animées ne soient pas visible dans le viewport. */
 
 section:first-child {
@@ -76,35 +75,42 @@ section:first-child {
     width: 95vmin;
     height: 95vmin;
     border-radius: 50%;
-    animation: earthRotation 80s linear infinite;
+    animation: earthRotation 100s linear infinite;
+    
 }
 
 section:nth-child(2) {
     position: absolute;
-    width: 170vmin;
-    height: 170vmin;
+    width: 140vmin;
+    height: 140vmin;
     border-radius: 50%;
-    animation: earthRotation 70s linear infinite;
-}
-section:nth-child(3) {
-    position: absolute;
-    width: 130vmin;
-    height: 130vmin;
-    border-radius: 50%;
-    animation: earthRotation 65s linear infinite;
+    animation: earthRotation 200s linear infinite;
+    
 }
 
+section:nth-child(3) {
+  position: absolute;
+  width: 170vmin;
+  height: 170vmin;
+  border-radius: 50%;
+  animation: earthRotation 300s linear infinite;
+}
+
+
+
 /* Ici, j'ajoute les variables binaires aux sélecteurs 
-pour pouvoir créer un pseudo-compteur.
+pour pouvoir créer notre pseudo-compteur.
 Bien qu'il y ai un nombre conséquent de sélecteurs, 
-cela évite tout de même de devoir appliquer un style 
+cela évite tout de même de devoir appliqer un style 
 aléatoire manuellement pour chaque élément.
  
-Avec avec cette technique, je peux cibler beaucoup plus d'élements
+Alternativement, j'aurai également pu rajouter un attribut 
+style aux div HTML avec une variable compteur incrémentée.
+
+Mais avec cette technique, je peux cibler beaucoup plus d'élements
 que le nombre de sélecteurs. En revanche, lorsque plus. étoiles 
 sont rangées sous le même sélecteur, (nous avons dépassé les limites du dernier bit),
-leur prop. de style ne peuvent pas être différenciées.
-*/
+leur style ne pourra pas être différencié. */
 
 div:nth-child(2n){
     --b0: 1;
@@ -122,6 +128,8 @@ div:is(
 :nth-child(8n-2),
 :nth-child(8n-3)) {
     --b2: 1;
+    background-color: violet;
+    
 } 
 
 div:is(
@@ -134,6 +142,7 @@ div:is(
 :nth-child(16n-6),
 :nth-child(16n-7)) {
     --b3: 1;
+    background-color: cyan;
 } 
 
 div:is(
@@ -153,7 +162,7 @@ div:is(
 :nth-child(32n-13),
 :nth-child(32n-14),
 :nth-child(32n-15)) {
-    --b4: 1;
+    --b4: 1;    
 }
 
 div:is(
@@ -198,7 +207,7 @@ div {
     --binaryCounter: calc(var(--b0) + 2 * var(--b1) + 4 * var(--b2) + 8 * var(--b3) + 16 * var(--b4) + 32 * var(--b5)); 
 
     
-    /* Je génère un nombre pseudo-aléatoire avec l'aide de la fonction de trigo. sin(), 
+    /* Je génère un nombre pseudo-aléatoire avec l'aide de sin(), 
     qui rend un intervalle [-1, 0], que je normalise à [0, 1] */
                                                                       /* Bruit */
     --randomPositiveNb: calc(0.5 + 0.5 * sin(var(--binaryCounter) * 342.06184 + 23.434));
@@ -206,7 +215,8 @@ div {
     /* Pour me rapprocher de quelque chose de plus aléatoire, 
     je dois rajouter du bruit ici et là avec des valeurs arbitraires */
 
-    /* Mon objectif est que chaque étoile se positionne sur un angle et un radius aléatoire.
+
+    /* Mon objectif est que les étoiles se positionnent sur un angle et un radius aléatoire, pour chacune.
     Cela afin de pouvoir animer une rotation. */
                                                                                 /* Bruit */
     --randomAngle: calc(var(--binaryCounter) * 0.628 + var(--randomPositiveNb) * 0.65656098 * 3.1416);  
@@ -214,10 +224,15 @@ div {
     
     --randomRadius: calc(50% * sqrt(var(--randomPositiveNb) + var(--randomPositiveNb) * 0.2589687));
 
+    /* cyan : rgb(0, 255, 255); */
+    /* beige : rgb(255, 227, 194) */
+
+
     position: absolute;
     width: calc(1px + var(--randomPositiveNb) * 3px);
     height: calc(1px + var(--randomPositiveNb) * 3px);
-    background-color: white;
+    /* background-color: rgb(calc(50 + var(--randomPositiveNb) * 255), 227, 194); */
+    background-color: rgb(255, 227, 194);
     border-radius: 50%;
     opacity: calc( 0.4 + var(--randomPositiveNb) * 1);  
 
